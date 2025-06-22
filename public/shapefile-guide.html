@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shapefile支持指南 - MapTool</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .file-list {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .file-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗂️ Shapefile支持指南</h1>
+        
+        <div class="warning">
+            <strong>注意：</strong> 当前版本的MapTool已经支持Shapefile文件集上传，但需要额外配置shpjs库来完整解析shapefile格式。
+        </div>
+
+        <h2>📋 Shapefile文件要求</h2>
+        <p>Shapefile是一种矢量数据格式，由多个文件组成。要成功加载shapefile，您需要提供以下文件：</p>
+        
+        <div class="file-list">
+            <h3>必需文件：</h3>
+            <ul>
+                <li><strong>.shp</strong> - 主文件，包含几何数据</li>
+                <li><strong>.shx</strong> - 索引文件</li>
+                <li><strong>.dbf</strong> - 属性数据文件</li>
+            </ul>
+            
+            <h3>可选文件：</h3>
+            <ul>
+                <li><strong>.prj</strong> - 投影信息文件</li>
+                <li><strong>.cpg</strong> - 编码信息文件</li>
+            </ul>
+        </div>
+
+        <h2>🔧 添加shpjs库支持</h2>
+        <p>要完整支持shapefile解析，请按以下步骤操作：</p>
+
+        <h3>方法1：通过CDN添加（推荐）</h3>
+        <p>在 <code>public/index.html</code> 文件的 <code>&lt;head&gt;</code> 标签中添加：</p>
+        <div class="code-block">
+&lt;script src="https://unpkg.com/shpjs@latest/dist/shp.js"&gt;&lt;/script&gt;
+        </div>
+
+        <h3>方法2：通过npm安装</h3>
+        <p>在项目根目录运行：</p>
+        <div class="code-block">
+npm install shpjs jszip --save
+        </div>
+        
+        <p>然后在 <code>src/main.js</code> 中添加：</p>
+        <div class="code-block">
+import shp from 'shpjs'
+window.shp = shp
+        </div>
+
+        <h2>📁 使用方法</h2>
+        <ol>
+            <li>准备完整的shapefile文件集（至少包含.shp、.shx、.dbf文件）</li>
+            <li>在地图页面点击"选择Shapefile文件集"按钮</li>
+            <li>同时选择所有相关文件（可以按住Ctrl键多选）</li>
+            <li>系统会自动检查文件完整性并解析</li>
+            <li>解析成功后，数据会显示在地图上</li>
+        </ol>
+
+        <div class="success">
+            <strong>提示：</strong> 如果您没有shapefile文件，建议使用GeoJSON格式，它更简单且完全支持。
+        </div>
+
+        <h2>🔄 替代方案</h2>
+        <p>如果无法配置shpjs库，您可以：</p>
+        <ul>
+            <li>使用在线工具将shapefile转换为GeoJSON格式</li>
+            <li>使用QGIS等GIS软件导出为GeoJSON</li>
+            <li>使用ogr2ogr命令行工具转换格式</li>
+        </ul>
+
+        <h3>推荐的在线转换工具：</h3>
+        <ul>
+            <li><a href="https://mapshaper.org/" target="_blank">Mapshaper</a> - 功能强大的在线地图数据处理工具</li>
+            <li><a href="https://mygeodata.cloud/converter/" target="_blank">MyGeodata Cloud</a> - 支持多种格式转换</li>
+        </ul>
+
+        <h2>🚀 测试shapefile支持</h2>
+        <p>配置完成后，您可以：</p>
+        <ol>
+            <li>下载示例shapefile数据</li>
+            <li>在地图页面测试上传功能</li>
+            <li>检查浏览器控制台是否有错误信息</li>
+        </ol>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/" class="btn">返回首页</a>
+            <a href="/map" class="btn">前往地图页面</a>
+        </div>
+    </div>
+</body>
+</html> 

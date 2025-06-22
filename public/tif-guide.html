@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIF栅格文件使用指南</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .code {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .step {
+            background-color: #e8f4fd;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .warning {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 TIF栅格文件使用指南</h1>
+        
+        <div class="highlight">
+            <strong>📋 本指南将帮助您了解如何在地图工具中使用TIF格式的栅格数据文件。</strong>
+        </div>
+
+        <h2>📖 什么是TIF文件？</h2>
+        <p>TIF（Tagged Image File Format）是一种常用的栅格数据格式，广泛用于存储地理空间数据，如：</p>
+        <ul>
+            <li><strong>卫星影像</strong> - Landsat、Sentinel等卫星数据</li>
+            <li><strong>数字高程模型(DEM)</strong> - 地形高程数据</li>
+            <li><strong>气象数据</strong> - 温度、降水、风速等</li>
+            <li><strong>土地利用数据</strong> - 植被覆盖、土地分类等</li>
+            <li><strong>环境监测数据</strong> - 污染指数、生态指标等</li>
+        </ul>
+
+        <h2>🔧 技术实现</h2>
+        <p>本地图工具使用以下技术栈来处理TIF文件：</p>
+        
+        <div class="step">
+            <h3>1. GeoTIFF.js</h3>
+            <p>用于解析TIF文件，提取栅格数据和地理信息：</p>
+            <div class="code">
+// 解析TIF文件
+const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer)
+const image = await tiff.getImage()
+const rasters = await image.readRasters()
+const bbox = image.getBoundingBox()
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>2. Plotty.js (npm安装)</h3>
+            <p>用于栅格数据的可视化渲染，支持多种色彩方案。现在使用npm安装方式：</p>
+            <div class="code">
+// 安装plotty库
+npm install plotty --save
+
+// 在Vue组件中使用
+import plotty from 'plotty'
+
+// 创建plotty渲染器
+const plot = new plotty.plot({
+    canvas: canvas,
+    data: rasterData,
+    width: width,
+    height: height,
+    domain: [min, max],
+    colorScale: 'viridis'
+})
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>3. Leaflet ImageOverlay</h3>
+            <p>将渲染后的栅格数据作为图像覆盖层添加到地图：</p>
+            <div class="code">
+// 创建图像覆盖层
+const imageOverlay = L.imageOverlay(
+    canvas.toDataURL(), 
+    imageBounds, 
+    { opacity: 0.8 }
+)
+            </div>
+        </div>
+
+        <h2>📦 依赖安装</h2>
+        <p>要使用TIF文件功能，需要安装以下依赖：</p>
+        
+        <div class="step">
+            <h3>npm安装方式（推荐）</h3>
+            <div class="code">
+# 安装plotty库用于栅格数据渲染
+npm install plotty --save
+
+# geotiff库通过CDN加载（已在index.html中配置）
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>CDN方式（备选）</h3>
+            <p>如果npm安装失败，系统会自动回退到CDN方式。在index.html中添加：</p>
+            <div class="code">
+&lt;script src="https://unpkg.com/plotty@latest/src/plotty.js"&gt;&lt;/script&gt;
+            </div>
+        </div>
+
+        <h2>📁 支持的文件格式</h2>
+        <ul>
+            <li><strong>.tif</strong> - 标准TIF格式</li>
+            <li><strong>.tiff</strong> - TIF格式的另一种扩展名</li>
+            <li><strong>GeoTIFF</strong> - 包含地理参考信息的TIF文件（推荐）</li>
+        </ul>
+
+        <div class="warning">
+            <strong>⚠️ 注意事项：</strong>
+            <ul>
+                <li>文件必须包含地理参考信息（坐标系统、投影等）</li>
+                <li>建议文件大小不超过50MB，以确保良好的加载性能</li>
+                <li>支持单波段和多波段数据（默认显示第一个波段）</li>
+            </ul>
+        </div>
+
+        <h2>🎨 色彩方案</h2>
+        <p>系统默认使用<strong>viridis</strong>色彩方案，这是一个科学可视化中广泛使用的色彩映射，具有以下特点：</p>
+        <ul>
+            <li>感知均匀性好</li>
+            <li>色盲友好</li>
+            <li>打印友好（黑白打印时仍可区分）</li>
+            <li>从深紫色到亮黄色的渐变</li>
+        </ul>
+
+        <h2>🚀 使用步骤</h2>
+        
+        <div class="step">
+            <h3>步骤 1: 准备TIF文件</h3>
+            <p>确保您的TIF文件：</p>
+            <ul>
+                <li>包含地理参考信息</li>
+                <li>数据格式正确</li>
+                <li>文件大小适中</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>步骤 2: 上传文件</h3>
+            <p>在地图界面中：</p>
+            <ul>
+                <li>点击"选择TIF栅格文件"按钮</li>
+                <li>选择您的.tif或.tiff文件</li>
+                <li>等待文件上传和解析</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>步骤 3: 查看结果</h3>
+            <p>文件加载成功后：</p>
+            <ul>
+                <li>栅格数据将以彩色图像形式显示在地图上</li>
+                <li>地图会自动缩放到数据范围</li>
+                <li>可以调整图层透明度和其他显示选项</li>
+            </ul>
+        </div>
+
+        <h2>🔍 数据解读</h2>
+        <p>不同类型的TIF数据有不同的解读方式：</p>
+        
+        <div class="step">
+            <h3>高程数据 (DEM)</h3>
+            <ul>
+                <li><strong>深色区域</strong> - 低海拔地区</li>
+                <li><strong>亮色区域</strong> - 高海拔地区</li>
+                <li>颜色渐变反映地形起伏</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>温度数据</h3>
+            <ul>
+                <li><strong>冷色调</strong> - 低温区域</li>
+                <li><strong>暖色调</strong> - 高温区域</li>
+                <li>数值范围通常在数据属性中说明</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>植被指数 (NDVI)</h3>
+            <ul>
+                <li><strong>深色</strong> - 无植被或水体</li>
+                <li><strong>亮色</strong> - 植被茂密区域</li>
+                <li>数值范围通常在-1到1之间</li>
+            </ul>
+        </div>
+
+        <h2>⚡ 性能优化建议</h2>
+        <ul>
+            <li><strong>文件大小</strong> - 建议小于50MB</li>
+            <li><strong>分辨率</strong> - 根据显示需求选择合适分辨率</li>
+            <li><strong>数据压缩</strong> - 使用LZW或其他压缩算法</li>
+            <li><strong>金字塔</strong> - 为大文件创建金字塔以提高显示性能</li>
+        </ul>
+
+        <h2>🛠️ 故障排除</h2>
+        
+        <div class="warning">
+            <h3>常见问题及解决方案：</h3>
+            <ul>
+                <li><strong>文件无法加载</strong> - 检查文件是否包含地理参考信息</li>
+                <li><strong>显示位置错误</strong> - 确认坐标系统是否正确</li>
+                <li><strong>颜色显示异常</strong> - 检查数据值范围和无效值</li>
+                <li><strong>加载速度慢</strong> - 考虑减小文件大小或分辨率</li>
+            </ul>
+        </div>
+
+        <div class="success">
+            <h3>✅ 成功加载的标志：</h3>
+            <ul>
+                <li>地图上显示彩色栅格图像</li>
+                <li>图像位置与实际地理位置对应</li>
+                <li>颜色渐变合理，无明显异常</li>
+                <li>可以正常缩放和平移</li>
+            </ul>
+        </div>
+
+        <h2>📚 扩展阅读</h2>
+        <ul>
+            <li><a href="https://geotiff.github.io/" target="_blank">GeoTIFF规范</a></li>
+            <li><a href="https://github.com/santilland/plotty" target="_blank">Plotty.js文档</a></li>
+            <li><a href="https://leafletjs.com/reference.html#imageoverlay" target="_blank">Leaflet ImageOverlay</a></li>
+        </ul>
+
+        <div class="highlight">
+            <p><strong>💡 提示：</strong> 如果您需要处理大型栅格数据集，建议使用专业的GIS软件进行预处理，然后导出为适合Web显示的格式。</p>
+        </div>
+    </div>
+</body>
+</html> 

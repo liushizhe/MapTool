@@ -1,0 +1,100 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "北京市中心",
+        "type": "城市中心",
+        "population": "2154万",
+        "area": "16410.54平方公里"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [116.4074, 39.9042]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "上海市中心",
+        "type": "城市中心",
+        "population": "2487万",
+        "area": "6340.5平方公里"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [121.4737, 31.2304]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "长江",
+        "type": "河流",
+        "length": "6300公里",
+        "description": "中国第一长河"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [121.4737, 31.2304],
+          [120.1551, 30.2741],
+          [118.7969, 32.0603],
+          [117.2461, 31.8206],
+          [116.4074, 39.9042],
+          [114.3054, 30.5928],
+          [112.9388, 28.2282],
+          [111.2741, 30.6944],
+          [109.4697, 36.6000],
+          [108.9540, 34.2658]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "示例区域",
+        "type": "行政区域",
+        "area": "1000平方公里",
+        "description": "这是一个示例多边形区域"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [116.3, 39.8],
+          [116.5, 39.8],
+          [116.5, 40.0],
+          [116.3, 40.0],
+          [116.3, 39.8]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "广州市中心",
+        "type": "城市中心",
+        "population": "1867万",
+        "area": "7434平方公里"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [113.2644, 23.1291]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "深圳市中心",
+        "type": "城市中心",
+        "population": "1756万",
+        "area": "1997.47平方公里"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [114.0579, 22.5431]
+      }
+    }
+  ]
+} 
